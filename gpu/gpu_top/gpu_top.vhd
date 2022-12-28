@@ -2,6 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 
 library work;
+use work.gpu_types.all;
 
 entity gpu_top is
 	Port (
@@ -9,11 +10,13 @@ entity gpu_top is
 		inRST     : in std_logic;
 		iLOAD     : in std_logic_vector(7 downto 0);
 		iINSTR    : in std_logic_vector(47 downto 0);
-		o_pix_rgb :out t_rgb888;
+		i_pix_x   : in t_pix_x;
+		i_pix_y   : in t_pix_x;
+		o_pix_rgb :out t_rgb888
 	);
 end gpu_top;
 
-architecture Behavioral of gpu_top
+architecture Behavioral of gpu_top is
 	signal sCOMP0 : std_logic;
 	signal sCOMP1 : std_logic;
 	signal sCOMP2 : std_logic;
