@@ -11,14 +11,14 @@ entity mux is
 		iD5 : in std_logic_vector(23 downto 0);
 		iD6 : in std_logic_vector(23 downto 0);
 		iD7 : in std_logic_vector(23 downto 0);
-		iSEL: in std_logic_vector(2 downto 0);
+		iSEL: in std_logic_vector( 2 downto 0);
 		oQ  :out std_logic_vector(23 downto 0);
 	);
 end mux;
 
 architecture Behavioral of mux
 begin
-	with iSEL select oQ<=
+	with iSEL select oQ <=
 		iD0 when "000",
 		iD1 when "001",
 		iD2 when "010",

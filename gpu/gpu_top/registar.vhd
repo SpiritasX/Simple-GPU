@@ -13,15 +13,14 @@ end registar;
 
 architecture Behavioral of registar
 begin
-process (iCLK, inRST)
+	process (iCLK, inRST)
 	begin
 		if (inRST = '0') then
-			iD <= (others => '0');
-		elsif (rising_edge(iCLK) ) then
+			oQ <= (others => '0');
+		elsif (rising_edge(iCLK)) then
 			if(iWE = '1') then
-			oQ <= iD;
+				oQ <= iD;
 			end if;
 		end if;
 	end process;	
-	
 end Behavioral;
