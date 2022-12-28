@@ -8,7 +8,7 @@ entity color_converter is
 	);
 end color_converter;
 
-architecture Behavioral of color_converter
+architecture Behavioral of color_converter is
 	signal sRED   : std_logic_vector(7 downto 0);
 	signal sGREEN : std_logic_vector(7 downto 0);
 	signal sBLUE  : std_logic_vector(7 downto 0);
@@ -32,4 +32,4 @@ begin
 		"11111111" when others;
 	
 	o24bitCOlor <= sBLUE & sGREEN & sRED;
-end Behavioral
+end Behavioral;

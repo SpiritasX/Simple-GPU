@@ -7,11 +7,11 @@ entity registar is
 			iCLK  : in std_logic;
 			inRST : in std_logic;
 			iWE   : in std_logic;
-			oQ    : out std_logic_vector(47 downto 0);
+			oQ    : out std_logic_vector(47 downto 0)
 	);
 end registar;
 
-architecture Behavioral of registar
+architecture Behavioral of registar is
 begin
 	process (iCLK, inRST)
 	begin

@@ -4,11 +4,11 @@ use ieee.std_logic_1164.all;
 entity priority_coder is
 	Port (
 		iD : in std_logic_vector(7 downto 0);
-		oQ :out std_logic_vector(2 downto 0);
+		oQ :out std_logic_vector(2 downto 0)
 	);
 end priority_coder;
 
-architecture Behavioral of priority_coder
+architecture Behavioral of priority_coder is
 begin
 	oQ <= "000" when iD(7) = '1' else
 	      "001" when iD(6) = '1' else
