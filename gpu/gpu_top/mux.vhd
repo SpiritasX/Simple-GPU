@@ -1,31 +1,30 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+library work;
+use work.gpu_top_types.all;
 
 entity mux is
+	Generic (
+		N     : integer := 8;
+		log2N : integer := 3
+	);
 	Port (
-		iD0 : in std_logic_vector(23 downto 0);
-		iD1 : in std_logic_vector(23 downto 0);
-		iD2 : in std_logic_vector(23 downto 0);
-		iD3 : in std_logic_vector(23 downto 0);
-		iD4 : in std_logic_vector(23 downto 0);
-		iD5 : in std_logic_vector(23 downto 0);
-		iD6 : in std_logic_vector(23 downto 0);
-		iD7 : in std_logic_vector(23 downto 0);
-		iSEL: in std_logic_vector( 2 downto 0);
+		iD  : in INPUTS(N-1 downto 0);
+		iSEL: in std_logic_vector(log2N-1 downto 0);
 		oQ  :out std_logic_vector(23 downto 0)
 	);
 end mux;
 
 architecture Behavioral of mux is
 begin
-	with iSEL select oQ <=
-		iD0 when "000",
-		iD1 when "001",
-		iD2 when "010",
-		iD3 when "011",
-		iD4 when "100",
-		iD5 when "101",
-		iD6 when "110",
-		iD7 when others;
-		
+	process (iD)
+	begin
+		L_1 : for i in 0 to N-1 loop
+			if (to_integer(unsigned(iSEL)) = i) then
+				oQ <= iD(i);
+			end if;
+		end loop;
+	end process;
 end Behavioral;
