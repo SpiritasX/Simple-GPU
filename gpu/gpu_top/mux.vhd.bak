@@ -19,8 +19,12 @@ end mux;
 
 architecture Behavioral of mux is
 begin
-	process (iD, iSEL)
+	process (iD)
 	begin
-		oQ <= iD(to_integer(unsigned(iSEL)));
+		L_1 : for i in 0 to N-1 loop
+			if (to_integer(unsigned(iSEL)) = i) then
+				oQ <= iD(i);
+			end if;
+		end loop;
 	end process;
 end Behavioral;

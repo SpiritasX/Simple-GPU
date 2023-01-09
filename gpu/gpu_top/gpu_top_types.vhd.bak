@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.math_real.all;
 
 package gpu_top_types is
-	constant N : integer := 8;
+	constant N : integer := 1024;
 	constant log2N : integer := positive(ceil(log2(real(N))));
 
 	type INPUTS is array (integer range <>) of std_logic_vector(23 downto 0);

@@ -148,6 +148,14 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to o_r_mot_in2
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to o_l_mot_in1
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to o_l_mot_in2
 
+set_global_assignment -name VHDL_FILE gpu/gpu_top/registar.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu_top/priority_coder.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu_top/mux.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu_top/gpu_top_types.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu_top/gpu_top.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu_top/comparator.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu_top/color_converter.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu.vhd
 set_global_assignment -name VHDL_FILE uart_tx.vhd
 set_global_assignment -name VHDL_FILE uart_rx.vhd
 set_global_assignment -name VHDL_FILE common/counter.vhd

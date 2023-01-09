@@ -16,7 +16,6 @@ architecture Behavioral of priority_coder is
 begin
 	process (iD)
 	begin
-		oQ <= (others => '0');
 		G_1 : for i in 0 to N-1 loop
 			if (iD(i) = '1') then
 				oQ <= std_logic_vector(to_unsigned(i, log2N));
