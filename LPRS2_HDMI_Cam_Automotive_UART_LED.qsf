@@ -42,7 +42,7 @@ set_global_assignment -name DEVICE 10M16SAU169C8G
 set_global_assignment -name TOP_LEVEL_ENTITY lprs2_hdmi_cam_automotive_uart_led
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 15.1.2
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "21:13:04  APRIL 12, 2016"
-set_global_assignment -name LAST_QUARTUS_VERSION "19.1.0 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.0.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
@@ -148,7 +148,6 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to o_r_mot_in2
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to o_l_mot_in1
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to o_l_mot_in2
 
-set_global_assignment -name VHDL_FILE gpu/gpu_top/registar.vhd
 set_global_assignment -name VHDL_FILE gpu/gpu_top/priority_coder.vhd
 set_global_assignment -name VHDL_FILE gpu/gpu_top/mux.vhd
 set_global_assignment -name VHDL_FILE gpu/gpu_top/gpu_top_types.vhd
@@ -156,6 +155,9 @@ set_global_assignment -name VHDL_FILE gpu/gpu_top/gpu_top.vhd
 set_global_assignment -name VHDL_FILE gpu/gpu_top/comparator.vhd
 set_global_assignment -name VHDL_FILE gpu/gpu_top/color_converter.vhd
 set_global_assignment -name VHDL_FILE gpu/gpu.vhd
+set_global_assignment -name VHDL_FILE gpu/registar.vhd
+set_global_assignment -name VHDL_FILE gpu/gpu_ram.vhd
+set_global_assignment -name VHDL_FILE gpu/bus_interface.vhd
 set_global_assignment -name VHDL_FILE uart_tx.vhd
 set_global_assignment -name VHDL_FILE uart_rx.vhd
 set_global_assignment -name VHDL_FILE common/counter.vhd

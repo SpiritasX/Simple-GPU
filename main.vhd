@@ -76,69 +76,70 @@ begin
 	sDATA6 <= "01"&"000011"&"0001000010"&"0000110000"&"0100110000"&"0010100000";
 	sDATA7 <= "00"&"000000"&"0000000000"&"0000000000"&"0000000000"&"0000000000";
 	
-	process (i_clk, in_rst)
-	begin
-		if (in_rst = '0') then
-			sCNT <= (others => '0');
-		elsif (rising_edge(i_clk)) then
-			if (sCNT = 12000000 - 1) then
-				sCNT <= (others => '0');
-			else
-				sCNT <= sCNT + 1;
-			end if;
-		end if;
-	end process;
+--	process (i_clk, in_rst)
+--	begin
+--		if (in_rst = '0') then
+--			sCNT <= (others => '0');
+--		elsif (rising_edge(i_clk)) then
+--			if (sCNT = 12000000 - 1) then
+--				sCNT <= (others => '0');
+--			else
+--				sCNT <= sCNT + 1;
+--			end if;
+--		end if;
+--	end process;
+--	
+--	sTC <= '1' when sCNT = 12000000 - 1 else '0';
+--	
+--	process (i_clk, in_rst)
+--	begin
+--		if (in_rst = '0') then
+--			sCNT_S <= (others => '0');
+--		elsif (rising_edge(i_clk)) then
+--			if (sTC = '1') then
+--				if (sCNT_S = 10) then
+--					sCNT_S <= (others => '0');
+--				else
+--					sCNT_S <= sCNT_S + 1;
+--				end if;
+--			end if;
+--		end if;
+--	end process;
+--	
+--	sTC2 <= '1' when sCNT_S = 2 else '0';
+--	
+--	process (i_clk, in_rst)
+--	begin
+--		if (in_rst = '0') then
+--			sCNT_S2 <= (others => '0');
+--		elsif (rising_edge(i_clk)) then
+--			if (sTC2 = '1' and sTC = '1') then
+--				if (sCNT_S2 = 3) then
+--					sCNT_S2 <= (others => '0');
+--				else
+--					sCNT_S2 <= sCNT_S2 + 1;
+--				end if;
+--			end if;
+--		end if;
+--	end process;
+--	
+--	sLOAD <= "10000000" when sCNT_S2 = 0 else
+--				"01000000" when sCNT_S2 = 1 else
+--				"00100000" when sCNT_S2 = 2 else
+--				"00010000";
+--	
+--	sDATA <= sDATA4 when sCNT_S2 = 0 else
+--				sDATA2 when sCNT_S2 = 1 else
+--				sDATA6 when sCNT_S2 = 2 else
+--				sDATA0;
 	
-	sTC <= '1' when sCNT = 12000000 - 1 else '0';
-	
-	process (i_clk, in_rst)
-	begin
-		if (in_rst = '0') then
-			sCNT_S <= (others => '0');
-		elsif (rising_edge(i_clk)) then
-			if (sTC = '1') then
-				if (sCNT_S = 10) then
-					sCNT_S <= (others => '0');
-				else
-					sCNT_S <= sCNT_S + 1;
-				end if;
-			end if;
-		end if;
-	end process;
-	
-	sTC2 <= '1' when sCNT_S = 2 else '0';
-	
-	process (i_clk, in_rst)
-	begin
-		if (in_rst = '0') then
-			sCNT_S2 <= (others => '0');
-		elsif (rising_edge(i_clk)) then
-			if (sTC2 = '1' and sTC = '1') then
-				if (sCNT_S2 = 3) then
-					sCNT_S2 <= (others => '0');
-				else
-					sCNT_S2 <= sCNT_S2 + 1;
-				end if;
-			end if;
-		end if;
-	end process;
-	
-	sLOAD <= "10000000" when sCNT_S2 = 0 else
-				"01000000" when sCNT_S2 = 1 else
-				"00100000" when sCNT_S2 = 2 else
-				"00010000";
-	
-	sDATA <= sDATA4 when sCNT_S2 = 0 else
-				sDATA2 when sCNT_S2 = 1 else
-				sDATA6 when sCNT_S2 = 2 else
-				sDATA0;
-	
-	gpu_i : entity work.gpu_top
+	i_gpu : entity work.gpu
 	port map (
-		iCLK      => i_gpu_clk,
+		iCLK      => i_clk,
+		iGPU_CLK  => i_gpu_clk,
 		inRST     => in_rst,
-		iLOAD     => sLOAD,
-		iINSTR    => sDATA,
+		iADDR     => "00000000",
+		iDATA     => "0000000000000000",
 		i_pix_x   => i_pix_x,
 		i_pix_y   => i_pix_y,
 		o_pix_rgb => o_pix_rgb
