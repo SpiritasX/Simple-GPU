@@ -45,26 +45,3 @@ PLLJ_PLLSPE_INFO.txt
 # Generic generated files
 *~
 *.bak
-
-# Qsys generated files.
-*_qsys.sopcinfo
-*_qsys/
-.qsys_edit/
-
-
-# Waf stuff.
-.waf*/
-waf3*/
-.lock-waf*
-
-# Build stuff.
-build/
-
-# Generated.
-*_gen.vhd
-*.o.txt
-*.o.dat
-
-# Prebuild.
-lprs1_emulator/
-lprs1_assembler/

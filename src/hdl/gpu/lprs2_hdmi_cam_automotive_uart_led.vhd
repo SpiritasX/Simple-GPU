@@ -43,12 +43,17 @@ entity lprs2_hdmi_cam_automotive_uart_led is
 		o_uart_tx       : out std_logic;
 		o_uart_rx       : in  std_logic;
 		
-		o_led           : out std_logic_vector(7 downto 0)
+		o_led           : out std_logic_vector(7 downto 0);
+		
+		iBUS_A     : in  std_logic_vector(7 downto 0);
+		oBUS_RD    : out std_logic_vector(15 downto 0);
+		iBUS_WD    : in  std_logic_vector(15 downto 0);
+		iBUS_WE    : in  std_logic
 	);
 end entity lprs2_hdmi_cam_automotive_uart_led;
 
 architecture arch of lprs2_hdmi_cam_automotive_uart_led is
-
+	
 	-- Config.
 	constant BAUD_RATE : natural := 115200;
 	
@@ -81,6 +86,23 @@ architecture arch of lprs2_hdmi_cam_automotive_uart_led is
 
 	
 begin
+	
+	i_gpu : entity work.gpu
+	generic map (
+		CLK_FREQ  => CLK_FREQ
+	)
+	port map (
+		iCLK      => i_clk,
+		iGPU_CLK  => gpu_clk,
+		inRST     => in_rst,
+		iADDR     => iBUS_A,
+		iDATA     => iBUS_WD,
+		i_pix_x   => pix_x,
+		i_pix_y   => pix_y,
+		o_pix_rgb => pix_rgb,
+		oBUS_RD   => oBUS_RD,
+		iBUS_WE   => iBUS_WE
+	);
 	
 	pll_rst <= not in_rst;
 	pll_inst: entity work.PLL
@@ -165,7 +187,7 @@ begin
 		i_pix_phase     => pix_phase,
 		i_pix_x         => pix_x,
 		i_pix_y         => pix_y,
-		o_pix_rgb       => pix_rgb,
+		o_pix_rgb       => open,
 		
 		o_chassis       => chassis,
 		
