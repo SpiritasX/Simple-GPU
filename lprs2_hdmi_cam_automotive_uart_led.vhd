@@ -43,12 +43,7 @@ entity lprs2_hdmi_cam_automotive_uart_led is
 		o_uart_tx       : out std_logic;
 		o_uart_rx       : in  std_logic;
 		
-		o_led           : out std_logic_vector(7 downto 0);
-		
-		iBUS_A     : in  std_logic_vector(7 downto 0);
-		oBUS_RD    : out std_logic_vector(15 downto 0);
-		iBUS_WD    : in  std_logic_vector(15 downto 0);
-		iBUS_WE    : in  std_logic
+		o_led           : out std_logic_vector(7 downto 0)
 	);
 end entity lprs2_hdmi_cam_automotive_uart_led;
 
@@ -83,9 +78,29 @@ architecture arch of lprs2_hdmi_cam_automotive_uart_led is
 	signal uart_rx_dv : std_logic;
 	signal uart_tx_d : std_logic_vector(7 downto 0);
 	signal uart_tx_dv : std_logic;
-
+	
+	signal sBUS_A  : std_logic_vector( 7 downto 0);
+	signal sBUS_WE : std_logic;
+	signal sBUS_RD : std_logic_vector(15 downto 0);
+	signal sBUS_WD : std_logic_vector(15 downto 0);
+	
 	
 begin
+
+	i_top: entity work.top
+	generic map(
+		CLK_FREQ         => CLK_FREQ,
+		CNT_BITS_COMPENS => 0
+	)
+	port map(
+		iCLK       => i_clk,
+		inRST      => in_rst,
+		oLED       => open,
+		iGPU_RD    => sBUS_RD,
+		oGPU_WE    => sBUS_WE,
+		oBUS_A     => sBUS_A,
+		oBUS_WD    => sBUS_WD
+	);
 	
 	i_gpu : entity work.gpu
 	generic map (
@@ -95,13 +110,13 @@ begin
 		iCLK      => i_clk,
 		iGPU_CLK  => gpu_clk,
 		inRST     => in_rst,
-		iADDR     => iBUS_A,
-		iDATA     => iBUS_WD,
+		iADDR     => sBUS_A,
+		iDATA     => sBUS_WD,
 		i_pix_x   => pix_x,
 		i_pix_y   => pix_y,
 		o_pix_rgb => pix_rgb,
-		oBUS_RD   => oBUS_RD,
-		iBUS_WE   => iBUS_WE
+		oBUS_RD   => sBUS_RD,
+		iBUS_WE   => sBUS_WE
 	);
 	
 	pll_rst <= not in_rst;

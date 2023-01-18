@@ -33,15 +33,15 @@ begin
           "100000100000000"  when iA = 6 else
           "000110000000000"  when iA = 7 else
           "100000101000000"  when iA = 8 else
-          "100000000000111"  when iA = 9 else
-          "010101000001001"  when iA = 10 else
-          "100000000000111"  when iA = 11 else
-          "010001000001011"  when iA = 12 else
-          "000010000000000"  when iA = 13 else
-          "000010001001001"  when iA = 14 else
-          "000001001001110"  when iA = 15 else
-          "110000000000001"  when iA = 16 else
-          "100000000000000"  when iA = 17 else
+          "000010000000000"  when iA = 9 else
+          "000010001001001"  when iA = 10 else
+          "000001001001110"  when iA = 11 else
+          "110000000000001"  when iA = 12 else
+          "100000000000000"  when iA = 13 else
+          "100000011000000"  when iA = 14 else
+          "000110001001000"  when iA = 15 else
+          "110000000011001"  when iA = 16 else
+          "000110000000000"  when iA = 17 else
           "100000011000000"  when iA = 18 else
           "000110001001000"  when iA = 19 else
           "110000000011001"  when iA = 20 else
@@ -57,14 +57,10 @@ begin
           "100000011000000"  when iA = 30 else
           "000110001001000"  when iA = 31 else
           "110000000011001"  when iA = 32 else
-          "000110000000000"  when iA = 33 else
-          "100000011000000"  when iA = 34 else
-          "000110001001000"  when iA = 35 else
-          "110000000011001"  when iA = 36 else
-          "000010000000000"  when iA = 37 else
-          "000110001001000"  when iA = 38 else
-          "110000000000001"  when iA = 39 else
-          "010000000001001"  when iA = 40 else
+          "000010000000000"  when iA = 33 else
+          "000110001001000"  when iA = 34 else
+          "110000000000001"  when iA = 35 else
+          "010000000100100"  when iA = 36 else
           "000000000000000";
 end Behavioral;
 ------------------------------------------------------------------
