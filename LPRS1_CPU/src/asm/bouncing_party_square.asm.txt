@@ -1,5 +1,7 @@
 .data
-5                ;; Adresa boje u memoriji
+7                ;; Adresa boje u memoriji
+0                ;; frame counter
+1                ;; max_frame = 1, fps = 60/max_frame
 0x300            ;; Pocetna adresa graficke. Krajnja je start+6
 0x340            ;; Frame sync
 640              ;; Maks x vrednost
@@ -8,32 +10,32 @@
 48               ;; Boja (48 = 110000, crvena)
 0                ;; x1
 0                ;; y1
-150              ;; x2
-150              ;; y2
+50               ;; x2
+50               ;; y2
 3                ;; dx
 1                ;; dy
 
 .text
 
-/*rising_edge:
+rising_edge:
 	sub R0, R0, R0
+	inc R0, R0
+	inc R0, R0
 	inc R0, R0
 	inc R0, R0
 	ld  R7, R0
 
 wait_zero:
-	ld  R0, R7
+	ld  R1, R7
 	jmpnz wait_zero
 wait_one:
-	ld  R0, R7
-	jmpz wait_one*/
+	ld  R1, R7
+	jmpz wait_one
 
-begin:
 
 ;; Slanje pravougaonika
 
-	sub R0, R0, R0
-	inc R0, R0
+	dec R0, R0
 	ld  R1, R0
 
 	sub R0, R0, R0
@@ -73,6 +75,24 @@ begin:
 
 ;; Kraj slanja
 
+count_frames_begin:
+	sub R0, R0, R0
+	inc R0, R0
+	ld  R1, R0
+	inc R0, R0
+	ld  R2, R0
+	dec R0, R0
+	inc R1, R1
+	sub R2, R2, R1
+	jmpz count_frames_heartbeat
+	st  R1, R0
+	jmp rising_edge
+count_frames_heartbeat:
+	sub R1, R1, R1
+	st  R1, R0
+count_frames_end:
+
+
 ;; R0 = temp
 ;; R1 = x1/y1
 ;; R2 = x2/y2
@@ -85,10 +105,12 @@ x_move:
 	inc R0, R0
 	inc R0, R0
 	inc R0, R0
+	inc R0, R0
+	inc R0, R0
 	ld  R4, R0
 
 	shl R0, R0
-	inc R0, R0
+	dec R0, R0
 	ld  R1, R0
 
 	inc R0, R0
@@ -110,12 +132,12 @@ x_move:
 	
 	mov R1, R1
 	jmps reset_x
-	jmp y_move
+	jmp end_x
 
 else_x:
 	sub R7, R4, R2
 	jmps reset_x
-	jmp y_move
+	jmp end_x
 
 reset_x:
 	not R3, R3
@@ -126,18 +148,31 @@ reset_x:
 	add R2, R2, R3
 	add R2, R2, R3
 
+end_x:
 
+	st  R3, R0
+	dec R0, R0
+	dec R0, R0
+	st  R2, R0
+	dec R0, R0
+	dec R0, R0
+	st  R1, R0
+	
 
 y_move:
-	
 	sub R0, R0, R0
+	inc R0, R0
+	inc R0, R0
 	inc R0, R0
 	inc R0, R0
 	inc R0, R0
 	inc R0, R0
 	ld  R4, R0
 
-	shl R0, R0
+	inc R0, R0
+	inc R0, R0
+	inc R0, R0
+	inc R0, R0
 	ld  R1, R0
 
 	inc R0, R0
@@ -159,14 +194,14 @@ y_move:
 	
 	mov R1, R1
 	jmps reset_y
-	jmp kraj
+	jmp end_y
 
 else_y:
 	sub R7, R4, R2
 	jmps reset_y
-	jmp kraj
+	jmp end_y
 
-reset:
+reset_y:
 	not R3, R3
 	inc R3, R3
 
@@ -174,9 +209,26 @@ reset:
 	add R1, R1, R3
 	add R2, R2, R3
 	add R2, R2, R3
+
+end_y:
+
+	st  R3, R0
+	dec R0, R0
+	dec R0, R0
+	st  R2, R0
+	dec R0, R0
+	dec R0, R0
+	st  R1, R0
+
+
 kraj:
-	//jmp rising_edge
-	jmp begin
+	sub R0, R0, R0
+	ld  R0, R0
+	inc R0, R0
+	ld  R1, R0
+	dec R1, R1
+	st  R1, R0
+	jmp rising_edge
 
 /*
 x1 += dx

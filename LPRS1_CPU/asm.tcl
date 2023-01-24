@@ -4,7 +4,7 @@
 # Author: Milos Subotic <milos.subotic@uns.ac.rs>
 ###############################################################################
 
-set asm_file "src/asm/dvd_square_animation.asm.txt"
+set asm_file "src/asm/bouncing_party_square.asm.txt"
 
 ###############################################################################
 
