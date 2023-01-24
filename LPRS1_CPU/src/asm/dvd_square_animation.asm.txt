@@ -4,6 +4,7 @@
 0x340            ;; Frame sync
 640              ;; Maks x vrednost
 480              ;; Maks y vrednost
+0                ;; Adresa u memoriji graficke
 48               ;; Boja (48 = 110000, crvena)
 0                ;; x1
 0                ;; y1
@@ -12,34 +13,14 @@
 3                ;; dx
 1                ;; dy
 
-;; x(t) = x(t-1) + dx
-;; 640 < x => 640 - x < 0
-;; R0 - temp
-;; R1 - boja
-;; R2 - x1, addr_out
-;; R3 - y1, data_out
-;; R4 - maks x
-;; R5 - maks y
-;; R6 - start addr
-;; R7 - frame sync
-
 .text
-;; Ucitava vrednosti fiksnih registara
+
+/*rising_edge:
 	sub R0, R0, R0
-
 	inc R0, R0
-	ld  R6, R0
-
 	inc R0, R0
 	ld  R7, R0
 
-	inc R0, R0
-	ld  R4, R0
-
-	inc R0, R0
-	ld  R5, R0
-
-/*rising_edge:
 wait_zero:
 	ld  R0, R7
 	jmpnz wait_zero
@@ -47,47 +28,182 @@ wait_one:
 	ld  R0, R7
 	jmpz wait_one*/
 
+begin:
 
-;; Slanje pravougaonika (moze biti petlja ako ih ima vise)
+;; Slanje pravougaonika
 
 	sub R0, R0, R0
+	inc R0, R0
+	ld  R1, R0
 
-	sub R1, R1, R1
-	add R1, R1, R6
-
-	st  R0, R1 ;; addr = 00000000 (start)
-
+	sub R0, R0, R0
 	ld  R0, R0
-	ld  R3, R0
-	inc R1, R1
-	st  R3, R1 ;; addr = 00000001 (boja)
+
+	st  R0, R1
 
 	inc R0, R0
 	ld  R3, R0
 	inc R1, R1
-	st  R3, R1 ;; addr = 00000010 (x1)
+	st  R3, R1
 
 	inc R0, R0
 	ld  R3, R0
 	inc R1, R1
-	st  R3, R1 ;; addr = 00000011 (y1)
+	st  R3, R1
+
+	inc R0, R0
+	ld  R3, R0
+	inc R1, R1
+	st  R3, R1
 	
 	inc R0, R0
 	ld  R3, R0
 	inc R1, R1
-	st  R3, R1 ;; addr = 00000100 (x2)
+	st  R3, R1
 
 	inc R0, R0
 	ld  R3, R0
 	inc R1, R1
-	st  R3, R1 ;; addr = 00000101 (y2)
+	st  R3, R1
 
-	sub R0, R0, R0 ;; Adresa registra u grafickoj u koji upisuje je 0
+	sub R0, R0, R0
+	ld  R0, R0
 	inc R1, R1
-	st  R0, R1 ;; addr = 00000110 (end)
+	st  R0, R1
 
 ;; Kraj slanja
 
+;; R0 = temp
+;; R1 = x1/y1
+;; R2 = x2/y2
+;; R3 = dx/dy
+;; R4 = max x/y
+
+x_move:
+
+	sub R0, R0, R0
+	inc R0, R0
+	inc R0, R0
+	inc R0, R0
+	ld  R4, R0
+
+	shl R0, R0
+	inc R0, R0
+	ld  R1, R0
+
+	inc R0, R0
+	inc R0, R0
+	ld  R2, R0
+
+	inc R0, R0
+	inc R0, R0
+	ld  R3, R0
+
+
+
+
+	add R1, R1, R3
+	add R2, R2, R3
+
+	mov R3, R3
+	jmpns else_x
+	
+	mov R1, R1
+	jmps reset_x
+	jmp y_move
+
+else_x:
+	sub R7, R4, R2
+	jmps reset_x
+	jmp y_move
+
+reset_x:
+	not R3, R3
+	inc R3, R3
+
+	add R1, R1, R3
+	add R1, R1, R3
+	add R2, R2, R3
+	add R2, R2, R3
+
+
+
+y_move:
+	
+	sub R0, R0, R0
+	inc R0, R0
+	inc R0, R0
+	inc R0, R0
+	inc R0, R0
+	ld  R4, R0
+
+	shl R0, R0
+	ld  R1, R0
+
+	inc R0, R0
+	inc R0, R0
+	ld  R2, R0
+
+	inc R0, R0
+	inc R0, R0
+	ld  R3, R0
+
+
+
+
+	add R1, R1, R3
+	add R2, R2, R3
+
+	mov R3, R3
+	jmpns else_y
+	
+	mov R1, R1
+	jmps reset_y
+	jmp kraj
+
+else_y:
+	sub R7, R4, R2
+	jmps reset_y
+	jmp kraj
+
+reset:
+	not R3, R3
+	inc R3, R3
+
+	add R1, R1, R3
+	add R1, R1, R3
+	add R2, R2, R3
+	add R2, R2, R3
+kraj:
+	//jmp rising_edge
+	jmp begin
+
+/*
+x1 += dx
+x2 += dx
+
+if (dx < 0)
+{
+	if (x1 < 0)
+	{
+		dx = -dx
+		x1 += dx
+		x1 += dx
+		x2 += dx
+		x2 += dx
+	}
+} else
+{
+	if (x2 > 640)
+	{
+		dx = -dx
+		x1 += dx
+		x1 += dx
+		x2 += dx
+		x2 += dx
+	}
+}
+*/
 
 /*
 	Primer slanja nula instrukcije u registar 0
@@ -111,29 +227,3 @@ wait_one:
 	inc R1, R1
 	st  R0, R1 ;; addr = 00000110 (end)
 */
-
-/*
-	sub R0, R0, R0
-	ld  R0, R0 ;; R0 pokazuje na x1
-	shl R1, R0 ;; R1 pokazuje na dx
-
-	inc R0, R0
-	inc R0, R0
-	ld  R2, R0 ;; R2 = x2
-	ld  R3, R1 ;; R3 = dx
-
-	add R2, R2, R3 ;; x1 = x1 + dx
-	sub R1, R4, R2
-	jmpns pomeri_x2
-
-	not R3, R3
-	inc R3, R3 ;; dx = -dx
-
-	add R2, R2, R3 ;; oduzmi prethodno dodan dx
-	add R2, R2, R3 ;; pomeri x u (sad) dobrom pravcu
-
-*/
-
-	//jmp rising_edge
-end:
-	jmp end
