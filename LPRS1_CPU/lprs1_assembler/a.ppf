@@ -1,0 +1,86 @@
+# 1 "C:/Users/Student/Desktop/New folder/LPRS2_HDMI_Cam_Automotive_UART_LED/LPRS1_CPU/src/asm/dvd_square_animation.asm.txt"
+# 1 "<command-line>"
+# 1 "C:/Users/Student/Desktop/New folder/LPRS2_HDMI_Cam_Automotive_UART_LED/LPRS1_CPU/src/asm/dvd_square_animation.asm.txt"
+.data
+5 ;; Adresa boje u memoriji
+0x300 ;; Pocetna adresa graficke. Krajnja je start+6
+0x340 ;; Frame sync
+640 ;; Maks x vrednost
+480 ;; Maks y vrednost
+48 ;; Boja (48 = 110000, crvena)
+0 ;; x1
+0 ;; y1
+150 ;; x2
+150 ;; y2
+3 ;; dx
+1 ;; dy
+
+;; x(t) = x(t-1) + dx
+;; 640 < x => 640 - x < 0
+;; R0 - temp
+;; R1 - boja
+;; R2 - x1, addr_out
+;; R3 - y1, data_out
+;; R4 - maks x
+;; R5 - maks y
+;; R6 - start addr
+;; R7 - frame sync
+
+.text
+;; Ucitava vrednosti fiksnih registara
+ sub R0, R0, R0
+
+ inc R0, R0
+ ld R6, R0
+
+ inc R0, R0
+ ld R7, R0
+
+ inc R0, R0
+ ld R4, R0
+
+ inc R0, R0
+ ld R5, R0
+# 51 "C:/Users/Student/Desktop/New folder/LPRS2_HDMI_Cam_Automotive_UART_LED/LPRS1_CPU/src/asm/dvd_square_animation.asm.txt"
+;; Slanje pravougaonika (moze biti petlja ako ih ima vise)
+
+ sub R0, R0, R0
+
+ sub R1, R1, R1
+ add R1, R1, R6
+
+ st R0, R1 ;; addr = 00000000 (start)
+
+ ld R0, R0
+ ld R3, R0
+ inc R1, R1
+ st R3, R1 ;; addr = 00000001 (boja)
+
+ inc R0, R0
+ ld R3, R0
+ inc R1, R1
+ st R3, R1 ;; addr = 00000010 (x1)
+
+ inc R0, R0
+ ld R3, R0
+ inc R1, R1
+ st R3, R1 ;; addr = 00000011 (y1)
+
+ inc R0, R0
+ ld R3, R0
+ inc R1, R1
+ st R3, R1 ;; addr = 00000100 (x2)
+
+ inc R0, R0
+ ld R3, R0
+ inc R1, R1
+ st R3, R1 ;; addr = 00000101 (y2)
+
+ sub R0, R0, R0 ;; Adresa registra u grafickoj u koji upisuje je 0
+ inc R1, R1
+ st R0, R1 ;; addr = 00000110 (end)
+
+;; Kraj slanja
+# 138 "C:/Users/Student/Desktop/New folder/LPRS2_HDMI_Cam_Automotive_UART_LED/LPRS1_CPU/src/asm/dvd_square_animation.asm.txt"
+end:
+ jmp end

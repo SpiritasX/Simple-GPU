@@ -66,5 +66,5 @@ build/
 *.o.dat
 
 # Prebuild.
-lprs1_emulator/
-lprs1_assembler/
+#lprs1_emulator/
+#lprs1_assembler/
