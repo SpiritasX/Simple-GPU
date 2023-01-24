@@ -27,15 +27,13 @@ architecture Behavioral of bus_interface is
 	signal sINSTR : std_logic_vector(47 downto 0);
 	
 	signal tc1         : std_logic;
-	signal tc2         : std_logic;
-	signal cnt2        : std_logic_vector(1 downto 0);
-	signal sFRAME_SYNC : std_logic;
+	signal sFRAME_SYNC : std_logic_vector(0 downto 0);
 begin
 	
 	count_1: entity work.counter
 	generic map(
-		CNT_MOD  => CLK_FREQ/4,
-		CNT_BITS => 22
+		CNT_MOD  => CLK_FREQ/120,
+		CNT_BITS => 18
 	)
 	port map(
 		i_clk  => iCLK,
@@ -49,8 +47,8 @@ begin
 	
 	count_2: entity work.counter
 	generic map(
-		CNT_MOD  => 4,
-		CNT_BITS => 2
+		CNT_MOD  => 2,
+		CNT_BITS => 1
 	)
 	port map(
 		i_clk  => iCLK,
@@ -58,11 +56,9 @@ begin
 		
 		i_rst  => '0',
 		i_en   => tc1,
-		o_cnt  => cnt2,
-		o_tc   => tc2
+		o_cnt  => sFRAME_SYNC,
+		o_tc   => open
 	);
-	
-	sFRAME_SYNC <= '1' when cnt2 = "11" else '0';
 
 	process (iCLK, inRST)
 	begin
